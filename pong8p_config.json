@@ -1,0 +1,23 @@
+{
+  "points_to_win": 15,
+  "autorestart": true,
+  "paddle_size": "small",
+  "trail_length": 50,
+  "particle_level": "high",
+  "ball_speed_mult": 1.0,
+  "ball_size_mult": 0.7,
+  "ball_color_name": "Cyan",
+  "goal_size_mult": 1.0,
+  "inputs": {
+    "TOP": "ai",
+    "RIGHT": "keyboard",
+    "BOTTOM": "ai",
+    "LEFT": "keyboard"
+  },
+  "tug_inputs": {
+    "TL": "ai",
+    "TR": "ai",
+    "BL": "ai",
+    "BR": "ai"
+  }
+}
