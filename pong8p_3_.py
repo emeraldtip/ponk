@@ -1272,7 +1272,7 @@ class ConfigMenu:
             self.change(key, 1)
         elif key.startswith("input_"):
             #unslop here
-            idx = input_manager.get_device_index
+            idx = self.input.get_device_index()
             if key in ("input_top", "input_right", "input_bottom", "input_left"):
                 side = {"input_top": TOP, "input_right": RIGHT,
                         "input_bottom": BOTTOM, "input_left": LEFT}[key]
