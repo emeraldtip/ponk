@@ -494,6 +494,7 @@ class InputManager:
             pass
         return f"name:{joy.get_name()}"
     
+    #human slop here
     def get_device_index(self):
         assigning = True
         while assigning:
@@ -511,7 +512,7 @@ class InputManager:
                     assigning = False
                     return i
                 i+=1
-
+    #end human slop
     def device_label(self, assignment):
         if assignment == "ai":
             return "AI"
@@ -1270,7 +1271,18 @@ class ConfigMenu:
         elif key in ("autorestart", "paddle_size", "particles", "ball_color"):
             self.change(key, 1)
         elif key.startswith("input_"):
-            self.change(key, 1)
+            #unslop here
+            idx = input_manager.get_device_index
+            if key in ("input_top", "input_right", "input_bottom", "input_left"):
+                side = {"input_top": TOP, "input_right": RIGHT,
+                        "input_bottom": BOTTOM, "input_left": LEFT}[key]
+                opts = self.input.available_assignments()
+                s.inputs[side] = opts[idx]
+            if key in ("input_tl", "input_tr", "input_bl", "input_br"):
+                tside = {"input_tl": TL, "input_tr": TR,
+                         "input_bl": BL, "input_br": BR}[key]
+                opts = self.input.available_assignments()
+                s.tug_inputs[tside] = opts[idx]
         elif key == "exit":
             self.settings.save(self.input)
             pygame.quit()
