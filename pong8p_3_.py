@@ -494,24 +494,33 @@ class InputManager:
             pass
         return f"name:{joy.get_name()}"
     
+    
     #human slop here
     def get_device_index(self):
         assigning = True
         while assigning:
-            i = 0
-            for joy in self.joysticks:
+            pygame.event.pump()
+            for num, joy in self.joysticks.items():
                 v = 0.0
                 try:
-                    if joy.get_numaxes() > axis_index:
-                        v = joy.get_axis(axis_index)
+                    print(list(self.joysticks.keys()))
+                    print(self.joysticks)
+                    if joy.get_numaxes() > 0:
+                        print("yey")
+                        v = joy.get_axis(0)
                         if abs(v) < JOY_DEADZONE:
+                            print("yoo")
                             v = 0.0
-                except Exception:
+                except Exception as e:
+                    import traceback
+                    traceback.print_exc()
                     v = 0.0
+                print(num,"value",v,joy)
                 if v != 0:
                     assigning = False
-                    return i
-                i+=1
+                    print("assigned")
+                    # first 2 options are ai and keyboard
+                    return num + 2
     #end human slop
     def device_label(self, assignment):
         if assignment == "ai":
@@ -1151,6 +1160,7 @@ class ConfigMenu:
         self.scroll = 0
         self.rows = []  # filled in build()
         self.row_rects = []  # (row_index, rect) for currently visible rows only
+        self.detecting = ""
         self.build()
 
     def _clamp_scroll(self):
@@ -1172,6 +1182,8 @@ class ConfigMenu:
         s = self.settings
 
         def input_label(side):
+            if self.detecting == side: #TODO investigate why this doesnt work
+                return "PLEASE MOVE THE WHEEL YOU WANT TO USE"
             if s.is_ai(side):
                 return "AI (follows ball)"
             return self.input.device_label(s.inputs[side])
@@ -1272,17 +1284,27 @@ class ConfigMenu:
             self.change(key, 1)
         elif key.startswith("input_"):
             #unslop here
+            #puer spagheti
+            sides = {"input_top": TOP, "input_right": RIGHT,
+                     "input_bottom": BOTTOM, "input_left": LEFT,
+                     "input_tl": TL, "input_tr": TR,
+                     "input_bl": BL, "input_br": BR}
+            self.detecting = sides[key]
+            self.build()
             idx = self.input.get_device_index()
             if key in ("input_top", "input_right", "input_bottom", "input_left"):
                 side = {"input_top": TOP, "input_right": RIGHT,
                         "input_bottom": BOTTOM, "input_left": LEFT}[key]
                 opts = self.input.available_assignments()
-                s.inputs[side] = opts[idx]
+                self.settings.inputs[side] = opts[idx]
             if key in ("input_tl", "input_tr", "input_bl", "input_br"):
                 tside = {"input_tl": TL, "input_tr": TR,
                          "input_bl": BL, "input_br": BR}[key]
                 opts = self.input.available_assignments()
-                s.tug_inputs[tside] = opts[idx]
+                self.settings.tug_inputs[tside] = opts[idx]
+            self.settings.save(self.input)
+            self.detecting = ""
+            self.build()
         elif key == "exit":
             self.settings.save(self.input)
             pygame.quit()

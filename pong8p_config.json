@@ -3,15 +3,27 @@
   "autorestart": true,
   "paddle_size": "small",
   "trail_length": 50,
-  "particle_level": "high",
+  "particle_level": "medium",
   "ball_speed_mult": 1.0,
-  "ball_size_mult": 0.7,
+  "ball_size_mult": 1.0,
   "ball_color_name": "Cyan",
   "goal_size_mult": 1.0,
   "inputs": {
-    "TOP": "ai",
-    "RIGHT": "keyboard",
-    "BOTTOM": "ai",
+    "TOP": {
+      "controller_id": "03002a074f04000055b6000000000000",
+      "dup_index": 0,
+      "name": "FGT Rumble 3-in-1"
+    },
+    "RIGHT": {
+      "controller_id": "03002a074f04000055b6000000000000",
+      "dup_index": 0,
+      "name": "FGT Rumble 3-in-1"
+    },
+    "BOTTOM": {
+      "controller_id": "03002a074f04000055b6000000000000",
+      "dup_index": 0,
+      "name": "FGT Rumble 3-in-1"
+    },
     "LEFT": "keyboard"
   },
   "tug_inputs": {
