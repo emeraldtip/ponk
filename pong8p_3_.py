@@ -506,19 +506,15 @@ class InputManager:
                     print(list(self.joysticks.keys()))
                     print(self.joysticks)
                     if joy.get_numaxes() > 0:
-                        print("yey")
                         v = joy.get_axis(0)
-                        if abs(v) < JOY_DEADZONE:
-                            print("yoo")
+                        if abs(v) < 0.5:
                             v = 0.0
                 except Exception as e:
                     import traceback
                     traceback.print_exc()
                     v = 0.0
-                print(num,"value",v,joy)
                 if v != 0:
                     assigning = False
-                    print("assigned")
                     # first 2 options are ai and keyboard
                     return num + 2
     #end human slop
